@@ -31,10 +31,16 @@ public:
         return m_valid ? optional<Rtype>(f(m_value)) : optional<Rtype>();
     }
     
+    operator bool() const
+    {
+        return m_valid;
+    }
+    
 private:
     bool m_valid;
     T m_value;
 };
+
 
 double func(int a)
 {
@@ -69,15 +75,14 @@ int main()
     d & ([](int val) { std::cout << "d = " << val << std::endl; return val; });
     e & ([](int val) { std::cout << "e = " << val << std::endl; return val; });
     
-    if(y.valid())
-        std::cout << "y = " << *y << std::endl;
-
-    if(z.valid())
-        std::cout << "z = " << *z << std::endl;
+    if(y) std::cout << "y = " << *y << std::endl;
+    if(z) std::cout << "z = " << *z << std::endl;
 
     b & func & print<double>;
     
     c & optional_func & print<int>;
+    
+    
 
     return 0;
 }
